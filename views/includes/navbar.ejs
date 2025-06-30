@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Shop By Category
+          </a>
+          <ul class="dropdown-menu w-100" aria-labelledby="navbarScrollingDropdown">
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Grocery')"><i class="fas fa-cart-shopping"></i> Grocery</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Fashion')"><i class="fas fa-tshirt"></i> Fashion</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Electronics')"><i class="fas fa-tv"></i> Electronics</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Sports')"><i class="fas fa-baseball-ball"></i> Sports</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Stationary')"><i class="fas fa-pen"></i> Stationary</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Gift')"><i class="fas fa-gift"></i> Gift</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterListings('Flowers')"><i class="fas fa-seedling"></i> Flowers</a></li>
+          </ul>        
+        </li>
+      </ul>
+
+      <!-- Search form with proper submission -->
+      <form class="d-flex me-auto" style="width: 50%;" action="/listings" method="GET">
+        <input class="form-control me-2" type="search" name="search" placeholder="My Shopping Choice" aria-label="Search" style="width: 70%;">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+      <!-- Login/Logout buttons -->
+      <div class="login">
+        <% if (currentUser) { %>
+          <a href="/logout" class="btn btn-outline-dark">Logout</a>
+        <% } else { %>
+          <a href="/login" class="btn btn-outline-dark">Login</a>
+        <% } %>
+      </div>
+
+      <div class="myCart">
+        
+        <a href="/myCart" class="btn btn-outline-dark"><i class="fa-solid fa-cart-shopping"></i> my Cart</a>
+      </div>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function filterListings(category) {
+      const url = new URL(window.location.href); // Get current URL
+      url.searchParams.set("category", category); // Set category in query params
+      window.location.href = url.toString(); // Reload page with new query
+    }
+  </script>
+</nav>

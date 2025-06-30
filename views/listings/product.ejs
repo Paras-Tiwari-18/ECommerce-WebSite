@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .step-form { display: none; }
+        .step-form.active { display: block; }
+        body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
+        
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .card-selection {
+            border: 2px solid transparent;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-selection:hover, .card-selection.selected {
+            border: 2px solid #007bff;
+            background: #eaf4ff;
+            box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.3);
+        }
+        .brand-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+        }
+
+        .brand-badge:hover, .brand-badge.selected {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 30px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .form-control {
+                font-size: 0.95rem;
+            }
+
+            .card-selection {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <form action="/productListing" method="post">
+            <div class="card">
+                <h2 class="text-center">Choose Your Products</h2>
+    
+                <!-- Categories -->
+                <h5>Step 1: Select a Category</h5>
+                <div id="category-list" class="row g-3 mb-4"></div>
+    
+                <!-- Products -->
+                <div id="product-container" style="display: none;">
+                    <h5>Step 2: Select Products</h5>
+                    <div id="product-list" class="row g-3 mb-4"></div>
+                </div>
+    
+                <!-- Brands -->
+                <div id="brand-container" style="display: none;">
+                    <h5>Step 3: Select Brands for Each Product</h5>
+                    <div id="brand-list" class="row g-3 mb-4" style="width: 150px;"></div>
+                </div>
+    
+                <!-- Quantity Selection -->
+                <div id="quantity-container" style="display: none;">
+                    <h5>Step 4: Select Quantity and Price for Each Brand</h5>
+                    <div id="selected-brands-list"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Product Listings</button>
+            </div>
+        </form>
+        
+    </div>
+    <script src="/js/new.js"></script>
+</body>
+</html>

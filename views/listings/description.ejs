@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product Description</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 1200px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        ul li {
+            font-size: 14px;
+            color: #666;
+        }
+        .form-control {
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .btn-secondary {
+            margin-top: 10px;
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .description-section {
+            margin-bottom: 30px;
+        }
+    </style>
+    <script>
+        function addInputDescription(containerId, productIndex) {
+            const container = document.getElementById(containerId);
+            
+            // Create and append heading input field first
+            const headingInput = document.createElement("input");
+            headingInput.type = "text";
+            headingInput.name = `heading[${productIndex}][]`; // Use array notation to send multiple descriptions per product
+            headingInput.placeholder = "Enter Heading (e.g., Quantity, Ingredients)";
+            headingInput.className = "form-control";
+            container.appendChild(headingInput);
+
+            // Create and append description input field second
+            const descriptionInput = document.createElement("textarea");
+            descriptionInput.name = `description[${productIndex}][]`; // Use array notation to send multiple descriptions per product
+            descriptionInput.placeholder = "Enter description (e.g., 500g, Contains Sugar)";
+            descriptionInput.className = "form-control";
+            container.appendChild(descriptionInput);
+
+            // Update the hidden input field to reflect the number of descriptions for this product
+            updateDescriptionCount(productIndex);
+        }
+
+        function updateDescriptionCount(productIndex) {
+            const headingInputs = document.getElementsByName(`heading[${productIndex}][]`);
+            const descriptionCountField = document.getElementById(`numDescriptionsForProduct_${productIndex}`);
+
+            // Update the hidden field with the current number of descriptions
+            descriptionCountField.value = headingInputs.length;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Product Descriptions</h2>
+        <p>Please enter the details about the product. You can describe various aspects such as:</p>
+        <ul>
+            <li>Product Quantity</li>
+            <li>Expiry/Life</li>
+            <li>Return Policy Of your shop</li>
+            <li>Usage/Instructions</li>
+            <li>Ingredients</li>
+            <li>Customer Care Details</li>
+            <li>Other Related Information Regarding Products</li>
+        </ul>
+        <form action="/descriptionProducts" method="POST">
+            <% if (products.length > 0) { %>
+                <% products.forEach((product, index) => { %>
+                    <div class="description-section">
+                        <h2>Fill Details of: <%= product.name %></h2>
+                        <h3>Brand: <%= product.brand %></h3>
+                        
+                        <!-- Hidden field to store the product ID -->
+                        <input type="hidden" name="productIds[]" value="<%= product._id %>">
+                        
+                        <div id="description-container-<%= index %>">
+                            <!-- Initially, one heading and description input field -->
+                            <input type="text" name="heading[<%= index %>][]" placeholder="Enter Heading (e.g., Quantity)" class="form-control" required>
+                            <textarea name="description[<%= index %>][]" placeholder="Enter description (e.g., 500g)" class="form-control" required></textarea>
+                        </div>
+
+                        <!-- Hidden field to store the number of descriptions -->
+                        <input type="hidden" id="numDescriptionsForProduct_<%= index %>" name="numDescriptionsForProduct_<%= index %>" value="1">
+                        
+                        <button type="button" class="btn btn-secondary" onclick="addInputDescription('description-container-<%= index %>','<%= index %>');">
+                            Add More Description
+                        </button>
+                    </div>
+                <% }) %>
+            <% } %>
+
+            <br><br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/productDisplay.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/show.css">
+  <link rel="stylesheet" href="/css/productShow.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+  <%- include("../includes/navbar.ejs") %>
+  <div>
+    <div  class="product-category-container">
+      <% for (let d of data) { %>
+        <img src="<%= d.img %>" alt="<%= d.category %>" class="category-image">
+      <% } %>
+    </div>
+  </div>
+  
+
+  
+  <% for(product of products){ %>
+    <% if(product.name === "Chocolates & Sweets") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+          <form action="/cartAdd" method="POST">
+            <input type="hidden" name="productId" value="<%= product._id %>">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+          </form>
+          <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+    <% if(product.name === "Biscuits & Snacks") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Bread") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Milk") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Rice & Pulses") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Flours & Atta") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Oils & Ghee") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Sugar & Salt") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Dry Fruits & Nuts") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Cereals & Breakfast Foods") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Spices & Masalas") {%>
+      <h4 style="padding-left:15px ;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if(product.name === "Tea & Coffee") {%>
+      <h4 style="padding-left:15px;margin: 25px;"><%= product.name %></h4>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="Product Image" class="product-image" />
+        <div class="product-details">
+          <h3 class="product-name"><%= product.name %></h3>
+          <p class="product-brand"><%= product.brand %></p>
+          <p class="product-price"><%= product.price %></p>
+          <p class="product-quantity"><%= product.quantity %></p>
+        </div>
+        <div class="product-actions">
+            <button class="add-to-cart">Add to Cart</button>
+            <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    <% } %>
+  <% } %>
+  <%- include("../includes/footer.ejs") %>
+</body>
+</html>
+

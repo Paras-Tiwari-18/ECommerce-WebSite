@@ -1,0 +1,9 @@
+.navbar
+{
+    height:5rem;
+}
+.btns
+{
+    display: flex;
+    justify-content: space-between;
+}

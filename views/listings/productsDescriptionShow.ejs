@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/show.css">
+    <link rel="stylesheet" href="/css/productShow.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+    <div class="main-container">
+        <div class="container1">
+            <div class="img-container">
+                <img src="<%= product.image %>" alt="Product Image" class="product-image">
+            </div>
+            <h1 class="section-title">Product Details</h1>
+
+            <% if (product.descriptions.length > 0) { %>
+                <div class="product-descriptions">
+                    <% product.descriptions.forEach(function(desc) { %>
+                        <% if (desc.descriptions && desc.descriptions.length > 0) { %>
+                            <% desc.descriptions.forEach(function(item) { %>
+                                <h4 class="desc-heading"><%= item.heading %></h4>
+                                <p class="desc-text"><%= item.description %></p>
+                            <% }); %>
+                        <% } %>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <h1 class="empty-message">Nothing Yet Stored</h1>
+            <% } %>
+        </div>
+
+        <div class="product-container">
+            <nav class="breadcrumb"> <a href="/productShow" style="text-decoration: none;">Home</a>/ <a href="" style="text-decoration: none;"><%= product.name %></a> / <a href="" style="text-decoration: none;"><%= product.brand %></a></nav>
+            <h1 class="product-title"><%= product.name %></h1>
+
+            <div class="delivery-info">
+                ⏳ <span class="time">9 MINS</span> <span class="chilled">Grocery</span>
+            </div>
+
+            <p class="brand-info">View all by <span class="brand-name"><a href="" style="text-decoration: none;"><%= product.brand %>▸</a></span></p>
+
+            <p class="product-size">330 ml</p>
+            <div class="price">MRP <%= product.price %></div>
+            <p class="tax-info">(Inclusive of all taxes)</p>
+
+            <button class="add-button">ADD TO CART</button>
+
+            <div class="why-shop">
+                <h3 class="why-title">Why shop from Bazaar?</h3>
+                <div class="shop-reasons">
+                    <div class="shop-reason">
+                        <img src="/images/img1.jpg" alt="Superfast Delivery">
+                        <div>
+                            <b>Superfast Delivery</b>
+                            <p>Get your order delivered to your doorstep at the earliest from stores near you.</p>
+                        </div>
+                    </div>
+                    <div class="shop-reason">
+                        <img src="/images/img2.jpg" alt="Best Prices & Offers">
+                        <div>
+                            <b>Best Prices & Offers</b>
+                            <p>Best price destination with offers from the shop owners.</p>
+                        </div>
+                    </div>
+                    <div class="shop-reason">
+                        <img src="/images/img3.jpg" alt="Wide Assortment">
+                        <div>
+                            <b>Wide Assortment</b>
+                            <p>Choose from variety products across food, personal care, household & other categories.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ <%- include("../includes/footer.ejs") %>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+ <script>
+    window.addEventListener('scroll', function () {
+      const productContainer = document.querySelector('.product-container');
+      const scrollPosition = window.scrollY;
+  
+      // Check if the scroll position is past a certain point (e.g., 100px)
+      if (scrollPosition > 100) {
+        productContainer.style.paddingTop = '80px'; // Add padding when scrolled
+      } else {
+        productContainer.style.paddingTop = '30px'; // Reset padding when at top (add unit)
+      }
+    });
+  </script>
+  
+  
+
+</body>
+</html>

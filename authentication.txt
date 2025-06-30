@@ -1,0 +1,173 @@
+The issue you're facing is because both Users and Shopkeepers are using the same session-based authentication (req.user), leading to conflicts between them when logging in.
+
+⚠️ What’s Happening?
+When you sign up, the account is created properly.
+But when you log in, Passport tries to log in the user, but since both User and Shopkeeper use the same req.user, it doesn’t know which model to check.
+This leads to incorrect logins and prevents the expected authentication behavior.
+✅ Solution: Separate Passport Strategies for User and Shopkeeper
+You need to register separate strategies for User and Shopkeeper in passport.js to differentiate their authentication.
+
+1️⃣ Configure Passport for Both User and Shopkeeper
+Modify your passport.js configuration file:
+
+js
+Copy
+Edit
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const User = require("./models/user"); // Import User Model
+const Shopkeeper = require("./models/shopkeeper"); // Import Shopkeeper Model
+
+// 🔹 User Authentication Strategy
+passport.use("user-local", new LocalStrategy(User.authenticate()));
+
+// 🔹 Shopkeeper Authentication Strategy
+passport.use("shopkeeper-local", new LocalStrategy(Shopkeeper.authenticate()));
+
+// 🔹 Serialize and Deserialize for Users
+passport.serializeUser((user, done) => {
+    done(null, { id: user._id, type: user.constructor.modelName });
+});
+
+passport.deserializeUser(async (obj, done) => {
+    try {
+        if (obj.type === "User") {
+            const user = await User.findById(obj.id);
+            return done(null, user);
+        } else if (obj.type === "Shopkeeper") {
+            const shopkeeper = await Shopkeeper.findById(obj.id);
+            return done(null, shopkeeper);
+        }
+        return done(new Error("No user type found"), null);
+    } catch (err) {
+        return done(err, null);
+    }
+});
+2️⃣ Update Login Routes for Users & Shopkeepers
+Modify your routes/auth.js file (or wherever you handle authentication):
+
+🔹 User Login Route
+js
+Copy
+Edit
+router.post("/login", passport.authenticate("user-local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+}), (req, res) => {
+    res.redirect("/dashboard"); // Redirect User to Dashboard
+});
+🔹 Shopkeeper Login Route
+js
+Copy
+Edit
+router.post("/bazaar/shopkeeperlogin", passport.authenticate("shopkeeper-local", {
+    failureRedirect: "/bazaar/shopkeeperlogin",
+    failureFlash: true,
+}), (req, res) => {
+    res.redirect("/bazaar/dashboard"); // Redirect Shopkeeper to Dashboard
+});
+3️⃣ Fix isLoggedIn and isLoggedInShopkeeper Middleware
+Modify your middleware functions to differentiate between User and Shopkeeper.
+
+🔹 Check if User is Logged In
+js
+Copy
+Edit
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated() || req.user.constructor.modelName !== "User") {
+        req.session.redirectTo = req.originalUrl;
+        req.flash("error", "You must be signed in as a User to access this page.");
+        return res.redirect("/login");
+    }
+    next();
+};
+🔹 Check if Shopkeeper is Logged In
+js
+Copy
+Edit
+module.exports.isLoggedInShopkeeper = (req, res, next) => {
+    if (!req.isAuthenticated() || req.user.constructor.modelName !== "Shopkeeper") {
+        req.session.redirectTo = req.originalUrl;
+        req.flash("error", "You must be signed in as a Shopkeeper to access this page.");
+        return res.redirect("/bazaar/shopkeeperlogin");
+    }
+    next();
+};
+🔹 Expected Behavior After This Fix
+✅ A User who signs up and logs in will be properly authenticated as a User.
+✅ A Shopkeeper who signs up and logs in will be properly authenticated as a Shopkeeper.
+✅ Sessions will not overwrite each other, preventing login conflicts.
+✅ The isLoggedIn middleware will only allow access to Users, while isLoggedInShopkeeper will only allow access to Shopkeepers.
+
+🚀 Summary of Fix
+✔ Separate Passport strategies for User (user-local) and Shopkeeper (shopkeeper-local).
+✔ Modify serializeUser & deserializeUser to store the user type (User or Shopkeeper).
+✔ Update login routes to use the correct strategy.
+✔ Fix isLoggedIn middleware to correctly differentiate between User & Shopkeeper.
+
+Try this out and let me know if you need more help! 🚀
+
+
+
+
+
+
+
+
+
+
+
+How serializeUser and deserializeUser Work in Passport.js
+Passport.js uses sessions to maintain authentication state across requests. The two core functions that handle this process are:
+
+1️⃣ serializeUser (Storing User Info in the Session)
+When a user logs in, Passport serializes the user’s information and stores it in the session.
+The purpose of serialization is to reduce the amount of data stored in the session by only saving a unique identifier (e.g., user.id).
+Since we have two types of users (User & Shopkeeper), we also store the user type to differentiate them.
+Example:
+js
+Copy
+Edit
+passport.serializeUser((user, done) => {
+    done(null, { id: user._id, type: user.constructor.modelName });
+});
+What happens here?
+A user logs in.
+Passport extracts the _id and model type (User or Shopkeeper).
+This data is stored in the session as { id: "123456", type: "User" }.
+2️⃣ deserializeUser (Retrieving User Info from the Session)
+When a request is made, Passport deserializes the user by fetching the stored ID from the session and retrieving the full user object from the database.
+This ensures that the user’s full information is available for subsequent requests.
+Example:
+js
+Copy
+Edit
+passport.deserializeUser(async (obj, done) => {
+    try {
+        if (obj.type === "User") {
+            const user = await User.findById(obj.id);
+            return done(null, user);
+        } else if (obj.type === "Shopkeeper") {
+            const shopkeeper = await Shopkeeper.findById(obj.id);
+            return done(null, shopkeeper);
+        }
+        return done(new Error("No user type found"), null);
+    } catch (err) {
+        return done(err, null);
+    }
+});
+What happens here?
+The user makes a new request.
+Passport fetches { id: "123456", type: "User" } from the session.
+It checks the type:
+If User, it fetches the full user details from User.findById(obj.id).
+If Shopkeeper, it fetches the details from Shopkeeper.findById(obj.id).
+The full user object is now available as req.user.
+🔥 Key Takeaways
+✔ serializeUser: Saves a minimal identifier (id & type) in the session.
+✔ deserializeUser: Retrieves the full user object from the database on each request.
+✔ Why separate strategies?
+
+Previously, Passport only handled one authentication strategy (User), so Shopkeepers couldn't log in.
+With separate strategies (user-local & shopkeeper-local), authentication is handled independently for both.
+Now, authentication will work smoothly for both Users and Shopkeepers without conflicts! 🚀 Let me know if you need further clarification. 😊

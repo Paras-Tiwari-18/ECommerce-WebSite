@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="css/signup.css" />
+    <script src="https://kit.fontawesome.com/5a2cd60e82.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <%- include("../includes/flash.ejs") %>
+    <div class="container">
+        <!-- Lottie Animation -->
+        <div id="lottiefiles">
+            <dotlottie-player 
+                src="https://lottie.host/d93e55aa-0b87-4819-b243-d3fa1d5dea8b/21aWgjQ6sK.json" 
+                background="transparent" 
+                speed="1" 
+                loop 
+                autoplay>
+            </dotlottie-player>
+        </div>
+        <!-- Form Section -->
+        <div class="form-box">
+            <h1 id="title"><b>Sign Up to Bazaar</b></h1>
+            <form action="/signup" method="POST">
+                <div class="input-group">
+                    <!-- Name Field -->
+                    <div class="input-field" id="namefield">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="Name" name="username">
+                    </div>
+                    <!-- Email Field -->
+                    <div class="input-field">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" placeholder="Email"
+                            name="email">
+                    </div>
+                    <!-- Password Field -->
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="Password"
+                            name="password">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">SignUp</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

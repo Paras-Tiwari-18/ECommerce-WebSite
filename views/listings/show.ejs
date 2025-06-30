@@ -1,0 +1,106 @@
+<% layout('/layouts/boilerplate') -%>
+<body>
+<div>
+    <div class="title"><h2><%=listing.title%></h2></div>
+  <div class="image-description">
+    <div class="image"><img class="img-st" src="<%=listing.image.url%>">
+    </div>
+    
+    <div class="description">
+        <div class="owner">
+            <% if (listing.owner) { %>
+                <h3>Listed By :- <%= listing.owner.username %></h3>
+            <% } else { %>
+                <h3>Listed By :- Unknown</h3>
+            <% } %>
+        </div>
+      <div class="product-details"><%=listing.description%>
+        <br>
+        <br>
+        <h5><%=listing.location%> , <%=listing.country%></h5>
+    </div>
+    </div>
+  </div>
+  <div class="review-map-container">
+    <!-- to display only to the logged in user -->
+    <% if(currentUser) {%>
+    <div class="review-section">
+        <form action="/listings/<%=listing._id%>/review" method="POST" novalidate class="row g-3 needs-validation">
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <!-- <input type="range" class="form-range" name="review[rating]" id="rating" min="1" max="5"> -->
+                <fieldset class="starability-slot">
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                  </fieldset>
+
+            </div>
+            <div>
+                <label for="comment" class="form-label">Comments</label>
+                <textarea name="review[comment]" id="comment" cols="30" rows="3" class="form-control" required></textarea>
+                <div class="invalid-feedback">
+                    You Need to fill this field
+                </div>
+                <button class="btn btn-outline-dark">Submit</button>
+            </div>
+        </form>
+    </div> 
+    <% } %>
+    <div id="map">
+        <!-- This is map div -->
+    </div>
+  </div>
+  <div class="review-heading" style="text-align: center; margin-top: 3px; margin-bottom: 3px;">
+    <h1>All Reviews</h1>
+</div>
+<div class="row g-3 "> <!-- Use g-3 for proper spacing -->
+    <% if (listing.reviews.length === 0) { %>
+        <div class="div">
+            <p>No reviews yet. Be the first to leave a review!</p>
+        </div>
+        
+    <% }%>
+    <% listing.reviews.forEach((review) => { %>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4"> <!-- 3 cards per row on medium+ screens -->
+            <div class="card">
+                <div class="card-body">
+                    <h5><b>Reviewed By :- </b><%= review.author.username%></h5>
+                    <!-- <h5 class="card-title"><%= review.rating %></h5> -->
+                    <p class="starability-result card-title" data-rating="<%= review.rating %>"></p>
+                    <p class="card-text"><%= review.comment %></p>
+                    <%if(currentUser && currentUser._id.toString() === review.author._id.toString()) { %>
+                    <form action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="btn">Delete</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+    <!-- or by hiding the button which others should not see -->
+    <% if (currentShopkeeper && currentShopkeeper._id.toString() === listing.owner._id.toString()) { %>
+        <form action="/listing/<%=listing._id%>/edit" method="GET">
+            <button class="btn">Edit Data</button>
+        </form>
+    <% } %>
+    
+</div>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/js/script.js"></script>
+<script src="/js/map.js"></script>
+  
+
+  
+</body>
+<!-- idea is to make a front page for the shop containing complete location pics descriptions reviews rating etc then clock on shop from shop then an page of shops products and listings open-->
+

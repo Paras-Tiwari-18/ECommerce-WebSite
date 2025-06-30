@@ -1,0 +1,86 @@
+<% layout('/layouts/boilerplate') -%>
+<style>
+  .no-listings-container {
+  text-align: center;
+  padding: 50px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.no-listings-image {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.no-listings-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.no-listings-text {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.no-listings-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.no-listings-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+</style>
+<body>
+    <form method="GET" action="/listing/new">
+        <button class="btn">Shopkeeper ? Create A Shop Listing</button>
+    </form>
+    
+
+      <ul>
+        <div class="row row-cols-lg-3">
+          <% if(allListings.length == 0) { %>
+            <div class="no-listings-container">
+              <img src="/images/noitem.jpg" alt="No Listings" class="no-listings-image">
+              <h1 class="no-listings-title">Oops! No Listings Available</h1>
+              <p class="no-listings-text">It looks like there are no listings for the category you selected.</p>
+              <a href="/listings" class="no-listings-button">Explore Other Categories</a>
+            </div>
+          <% } %>
+          
+          <% for (let listing of allListings) { %>
+            <a href="/listing/<%= listing._id %>" class="listing-line">
+              <div class="product-card">
+                <div class="product-image">
+                  <img src="<%= listing.image.url %>" alt="Product Image">
+                </div>
+                <div class="product-details">
+                  <h5 class="product-title"><%=listing.title%></h5>
+                  <p class="product-description"><%=listing.description%></p>
+                  <div class="product-footer">
+                    <span class="product-price"><%= listing.price %></span>
+                    <button class="btn btn-primary">View Shop</button>
+                    
+                  </div>
+                </div>
+              </div>
+            </a>
+            
+        <% } %>
+        </div>  
+      </ul>       
+</body>
+
